@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 # from datetime import datetime
 # from decimal import Decimal
 # from typing import Annotated
@@ -105,54 +92,29 @@
 
 
 
+
+
+
+
+
 from decimal import Decimal
 from datetime import datetime
-import decimal
-import json
 from typing import Annotated
-from pydantic import PlainSerializer, ConfigDict, Field, BaseModel,model_validator
+from pydantic import BaseModel, ConfigDict, Field
 
-Price = Annotated[Decimal, Field(max_length=200, ge=0, )]
-JsonPrice = Annotated[Decimal, PlainSerializer(float, return_type="float", when_used="json")]
+pricing = Annotated[Decimal, Field(max_digits=10, ge=0, decimal_places=2)]
 
 class AuthorCreate(BaseModel):
-    model_config = ConfigDict(str_strip_whitespace=True)
-    name: str = Field(min_length=1,max_length=200)
+    model_config= ConfigDict(str_strip_whitespace=True)
+    name: str = Field(min_length=2, max_length=120)
     country: str | None = Field(default=None, max_length=80)
 
 class AuthorRead(AuthorCreate):
-    model_config = ConfigDict(getattr=True)
-    id: int = Field(ge=0)
-
-class AuthorPage(BaseModel):
-    items: list[AuthorCreate]
-    total: int
-    limit: int
-    offset: int
-
-class BookCreate(BaseModel):
-    model_config = ConfigDict(str_strip_whitespace=True)
-    title: str = Field(max_length=200)
-    author_id: int = Field(gt=0)
-    in_stock: bool = True
-    price: Price
-
-class BookRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    id: int
-    title: str
-    author_id: int
-    price: JsonPrice
-    in_stock: bool
-    created_at: datetime
+    id: int = Field(max_length=20)
 
-class BookUpdate(BaseModel):
-    model_config = ConfigDict(str_strip_whitespace=True)
-    title: str | None = Field(max_length=200)
-    in_stock: bool | None
-    price: int | Price
-
-def something_like_this(self):
-    if not self.model_fields_set:
-        raise ValueError("no field filled")
-    from 
+class AuthorPage(AuthorRead):
+    items: list[AuthorRead]
+    list: int
+    total: int
+    offset: int
