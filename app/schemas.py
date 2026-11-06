@@ -1,30 +1,30 @@
-# from datetime import datetime
-# from decimal import Decimal
-# from typing import Annotated
-# from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, model_validator
+from datetime import datetime
+from decimal import Decimal
+from typing import Annotated
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, model_validator
 
-# Price = Annotated[Decimal, Field(max_digits=6, decimal_places=2, ge=0)]
-# # Decimal is exact in Python and in PostgreSQL, but Pydantic v2 writes it to JSON as a
-# # STRING. Clients of this API expect a JSON number, so serialize (output only) as float.
-# JsonPrice = Annotated[Decimal, PlainSerializer(float, return_type=float, when_used="json")]
-
-
-# class AuthorCreate(BaseModel):
-#     model_config = ConfigDict(str_strip_whitespace=True)
-#     name: str = Field(min_length=1, max_length=120)
-#     country: str | None = Field(default=None, max_length=80)
+Price = Annotated[Decimal, Field(max_digits=6, decimal_places=2, ge=0)]
+# Decimal is exact in Python and in PostgreSQL, but Pydantic v2 writes it to JSON as a
+# STRING. Clients of this API expect a JSON number, so serialize (output only) as float.
+JsonPrice = Annotated[Decimal, PlainSerializer(float, return_type=float, when_used="json")]
 
 
-# class AuthorRead(AuthorCreate):
-#     model_config = ConfigDict(from_attributes=True)
-#     id: int
+class AuthorCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    name: str = Field(min_length=1, max_length=120)
+    country: str | None = Field(default=None, max_length=80)
 
 
-# class AuthorPage(BaseModel):
-#     items: list[AuthorRead]
-#     total: int
-#     limit: int
-#     offset: int
+class AuthorRead(AuthorCreate):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+
+
+class AuthorPage(BaseModel):
+    items: list[AuthorRead]
+    total: int
+    limit: int
+    offset: int
 
 
 # class BookCreate(BaseModel):
@@ -94,27 +94,19 @@
 
 
 
+# pricing = Annotated[Decimal, Field(max_digits=10, ge=0, decimal_places=2)]*
 
+# class AuthorCreate(BaseModel):
+#     model_config= ConfigDict(str_strip_whitespace=True)
+#     name: str = Field(min_length=2, max_length=120)
+#     country: str | None = Field(default=None, max_length=80)
 
+# class AuthorRead(AuthorCreate):
+#     model_config = ConfigDict(from_attributes=True)
+#     id: int = Field(max_length=20)
 
-from decimal import Decimal
-from datetime import datetime
-from typing import Annotated
-from pydantic import BaseModel, ConfigDict, Field
-
-pricing = Annotated[Decimal, Field(max_digits=10, ge=0, decimal_places=2)]
-
-class AuthorCreate(BaseModel):
-    model_config= ConfigDict(str_strip_whitespace=True)
-    name: str = Field(min_length=2, max_length=120)
-    country: str | None = Field(default=None, max_length=80)
-
-class AuthorRead(AuthorCreate):
-    model_config = ConfigDict(from_attributes=True)
-    id: int = Field(max_length=20)
-
-class AuthorPage(AuthorRead):
-    items: list[AuthorRead]
-    list: int
-    total: int
-    offset: int
+# class AuthorPage(AuthorRead):
+#     items: list[AuthorRead]
+#     list: int
+#     total: int
+#     offset: int
