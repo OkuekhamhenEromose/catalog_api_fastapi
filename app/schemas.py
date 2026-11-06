@@ -82,31 +82,24 @@ class AuthorPage(BaseModel):
 
 
 
+class BookCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    title: str = Field(min_length=0, max_length=80)
+    author_id: int = Field(gt=0)
+    price: Price
+    in_stock: bool = True
 
+class BookRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    title: str
+    id: int
+    author_id: int
+    price: JsonPrice
+    in_stock: bool
+    created_at: datetime
 
-
-
-
-
-
-
-
-
-
-
-# pricing = Annotated[Decimal, Field(max_digits=10, ge=0, decimal_places=2)]*
-
-# class AuthorCreate(BaseModel):
-#     model_config= ConfigDict(str_strip_whitespace=True)
-#     name: str = Field(min_length=2, max_length=120)
-#     country: str | None = Field(default=None, max_length=80)
-
-# class AuthorRead(AuthorCreate):
-#     model_config = ConfigDict(from_attributes=True)
-#     id: int = Field(max_length=20)
-
-# class AuthorPage(AuthorRead):
-#     items: list[AuthorRead]
-#     list: int
-#     total: int
-#     offset: int
+class BookUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    title: str | None = None
+    price: Price | None = None
+    in_stock: bool | None = None
