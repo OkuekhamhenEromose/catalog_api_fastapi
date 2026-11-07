@@ -103,3 +103,9 @@ class BookUpdate(BaseModel):
     title: str | None = None
     price: Price | None = None
     in_stock: bool | None = None
+
+class BookPage(BaseModel):
+    items: list[BookRead]
+    total: int
+    limit: int
+    offset: int
