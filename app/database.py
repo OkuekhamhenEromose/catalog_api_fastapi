@@ -16,4 +16,4 @@ def get_db() -> Iterator[Session]:
     with SessionLocal() as session:
         yield session
 
-# 18 errors
+# 5

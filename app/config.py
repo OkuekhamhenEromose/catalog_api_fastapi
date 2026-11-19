@@ -10,5 +10,3 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()  # pyright: ignore[reportCallIssue]
-
-# 13 errors
